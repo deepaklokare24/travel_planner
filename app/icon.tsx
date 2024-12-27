@@ -1,11 +1,9 @@
 import { ImageResponse } from 'next/server';
-import React from 'react';
- 
+
 export const runtime = 'edge';
-export const contentType = 'image/png';
-export const size = { width: 180, height: 180 };
- 
-export async function GET(): Promise<ImageResponse> {
+export const size = { width: 192, height: 192 };
+
+export default function Image() {
   return new ImageResponse(
     (
       <div
@@ -18,7 +16,7 @@ export async function GET(): Promise<ImageResponse> {
           alignItems: 'center',
           justifyContent: 'center',
           color: 'white',
-          fontSize: '90px',
+          fontSize: '96px',
           fontWeight: 700,
         }}
       >
