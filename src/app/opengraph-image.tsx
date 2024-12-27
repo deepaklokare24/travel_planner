@@ -1,7 +1,9 @@
 import { ImageResponse } from 'next/server';
+import React from 'react';
 
 // Route segment config
 export const runtime = 'edge';
+export const alt = 'Travel Planner';
 
 // Image metadata
 export const contentType = 'image/png';
@@ -11,7 +13,7 @@ export const size = {
 };
 
 // Image generation
-export default function Image() {
+export default async function Image() {
   return new ImageResponse(
     (
       <div
@@ -23,61 +25,26 @@ export default function Image() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
+          color: 'white',
           padding: '40px',
         }}
       >
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'rgba(255, 255, 255, 0.1)',
-            padding: '40px 60px',
-            borderRadius: '20px',
-            border: '2px solid rgba(255, 255, 255, 0.2)',
+            fontSize: '80px',
+            fontWeight: 700,
+            marginBottom: '20px',
           }}
         >
-          <h1
-            style={{
-              fontSize: '80px',
-              fontWeight: 'bold',
-              color: 'white',
-              textAlign: 'center',
-              marginBottom: '20px',
-              lineHeight: 1.2,
-            }}
-          >
-            AI Travel Planner
-          </h1>
-          <p
-            style={{
-              fontSize: '32px',
-              color: 'rgba(255, 255, 255, 0.9)',
-              textAlign: 'center',
-              marginTop: '0',
-            }}
-          >
-            Your Perfect Journey Awaits
-          </p>
+          Travel Planner
         </div>
         <div
           style={{
-            position: 'absolute',
-            bottom: '40px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
+            fontSize: '40px',
+            opacity: 0.8,
           }}
         >
-          <p
-            style={{
-              fontSize: '24px',
-              color: 'rgba(255, 255, 255, 0.9)',
-            }}
-          >
-            Powered by AI • Personalized Itineraries • Local Insights
-          </p>
+          Plan your perfect trip with AI
         </div>
       </div>
     ),

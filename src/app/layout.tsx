@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     siteName: "AI Travel Planner",
     images: [
       {
-        url: `${baseUrl}/opengraph-image.png`,
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: "AI Travel Planner Preview",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI Travel Planner - Your Perfect Journey Awaits",
     description: "Plan your perfect trip with our AI-powered travel planner. Get personalized itineraries and local insights.",
-    images: [`${baseUrl}/twitter-image.png`],
+    images: ['/opengraph-image'],
     creator: "@travelplanner",
   },
   icons: {
