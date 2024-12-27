@@ -3,8 +3,7 @@ const getApiUrl = () => {
     return process.env.NEXT_PUBLIC_API_URL;
   }
   if (process.env.NODE_ENV === 'production') {
-    // Replace this with your deployed API URL
-    return 'https://your-api-url.railway.app';
+    return 'https://travelagent-production.up.railway.app';
   }
   return 'http://localhost:8000';
 };
