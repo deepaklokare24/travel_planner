@@ -1,4 +1,6 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+import { API_URL } from './api';
+
+export const API_BASE_URL = API_URL;
 
 export const BUDGET_OPTIONS = [
   { value: 'low', label: 'Budget Friendly' },
