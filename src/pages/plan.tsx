@@ -22,6 +22,7 @@ import { CalendarIcon, MinusCircle, PlusCircle, Users, HomeIcon } from "lucide-r
 import { useRouter } from "next/router";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import Link from "next/link";
+import { API_BASE_URL } from '@/config/constants';
 
 const formSchema = z.object({
   from_location: z.string().min(2, "Location is required"),
@@ -74,7 +75,7 @@ export default function PlanPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/v1/generate-itinerary", {
+      const response = await fetch(`${API_BASE_URL}/generate-itinerary`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
