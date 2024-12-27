@@ -66,7 +66,7 @@ A modern, user-friendly travel planning application built with Next.js that help
 
 3. Create a `.env.local` file in the root directory:
    ```env
-   NEXT_PUBLIC_API_URL=http://localhost:8000
+   NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
    ```
 
 4. Start the development server:
