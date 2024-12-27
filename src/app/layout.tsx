@@ -4,19 +4,22 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const baseUrl = 'https://travel-planner-one-virid.vercel.app';
+
 export const metadata: Metadata = {
   title: "AI Travel Planner - Your Perfect Journey Awaits",
   description: "Plan your perfect trip with our AI-powered travel planner. Get personalized itineraries, local insights, and smart recommendations tailored to your preferences.",
   keywords: ["travel planner", "AI travel", "trip planning", "itinerary generator", "vacation planner"],
   authors: [{ name: "Travel Planner Team" }],
+  metadataBase: new URL(baseUrl),
   openGraph: {
     title: "AI Travel Planner - Your Perfect Journey Awaits",
     description: "Get personalized travel itineraries with local insights and smart recommendations, tailored to your preferences.",
-    url: "https://travel-planner-one-virid.vercel.app",
+    url: baseUrl,
     siteName: "AI Travel Planner",
     images: [
       {
-        url: "/og-image.jpg", // Make sure to add this image in your public folder
+        url: `${baseUrl}/opengraph-image.png`,
         width: 1200,
         height: 630,
         alt: "AI Travel Planner Preview",
@@ -29,16 +32,25 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "AI Travel Planner - Your Perfect Journey Awaits",
     description: "Plan your perfect trip with our AI-powered travel planner. Get personalized itineraries and local insights.",
-    images: ["/twitter-image.jpg"], // Make sure to add this image in your public folder
+    images: [`${baseUrl}/twitter-image.png`],
     creator: "@travelplanner",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: ["/shortcut-icon.png"],
   },
   manifest: "/site.webmanifest",
-  viewport: "width=device-width, initial-scale=1",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
   themeColor: "#ffffff",
   robots: {
     index: true,
