@@ -1,12 +1,16 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/server';
 
+// Route segment config
 export const runtime = 'edge';
+
+// Image metadata
 export const contentType = 'image/png';
 export const size = {
   width: 32,
   height: 32,
 };
 
+// Image generation
 export default function Icon() {
   return new ImageResponse(
     (

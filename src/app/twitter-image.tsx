@@ -1,17 +1,17 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/server';
 
 // Route segment config
 export const runtime = 'edge';
-export const contentType = 'image/png';
 
 // Image metadata
-export const alt = 'AI Travel Planner';
+export const contentType = 'image/png';
 export const size = {
   width: 1200,
   height: 675,
 };
 
-export default async function Image() {
+// Image generation
+export default function Image() {
   return new ImageResponse(
     (
       <div

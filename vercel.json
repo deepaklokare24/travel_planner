@@ -1,22 +1,8 @@
 {
-  "functions": {
-    "src/app/opengraph-image.tsx": {
-      "runtime": "edge",
-      "memory": 1024
-    },
-    "src/app/twitter-image.tsx": {
-      "runtime": "edge",
-      "memory": 1024
-    },
-    "src/app/icon.tsx": {
-      "runtime": "edge",
-      "memory": 1024
-    },
-    "src/app/apple-icon.tsx": {
-      "runtime": "edge",
-      "memory": 1024
-    }
-  },
+  "buildCommand": "next build",
+  "devCommand": "next dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
   "images": {
     "sizes": [16, 32, 48, 64, 96, 128, 256, 384],
     "domains": ["images.unsplash.com"],
