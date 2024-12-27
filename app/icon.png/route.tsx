@@ -1,30 +1,24 @@
 import { ImageResponse } from 'next/server';
-
-// Route segment config
+import React from 'react';
+ 
 export const runtime = 'edge';
-
-// Image metadata
 export const contentType = 'image/png';
-export const size = {
-  width: 180,
-  height: 180,
-};
-
-// Image generation
-export default function Icon() {
+export const size = { width: 192, height: 192 };
+ 
+export async function GET(): Promise<ImageResponse> {
   return new ImageResponse(
     (
       <div
         style={{
           background: 'linear-gradient(to bottom right, #4F46E5, #0EA5E9)',
-          borderRadius: '40px',
+          borderRadius: '50%',
           width: '100%',
           height: '100%',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '100px',
           color: 'white',
+          fontSize: '96px',
           fontWeight: 700,
         }}
       >

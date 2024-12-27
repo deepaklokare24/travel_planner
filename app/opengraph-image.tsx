@@ -1,18 +1,14 @@
 import { ImageResponse } from 'next/server';
 import React from 'react';
 
-// Route segment config
 export const runtime = 'edge';
 export const alt = 'Travel Planner';
-
-// Image metadata
 export const contentType = 'image/png';
 export const size = {
   width: 1200,
   height: 630,
 };
 
-// Image generation
 export default async function Image() {
   return new ImageResponse(
     (
