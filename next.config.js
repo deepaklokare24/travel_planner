@@ -12,7 +12,7 @@ const nextConfig = {
       '@/src': './src'
     }
     return config
-  },
+  }
 }
 
 module.exports = nextConfig
