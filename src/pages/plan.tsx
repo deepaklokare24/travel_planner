@@ -170,16 +170,16 @@ export default function PlanPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="max-w-3xl mx-auto px-4">
-        <div className="absolute top-4 left-4">
-          <Link href="/">
-            <Button variant="ghost" size="icon" className="hover:bg-accent">
-              <HomeIcon className="h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-        <h1 className="text-3xl font-bold mb-8 text-center">Plan Your Trip</h1>
+    <div className="min-h-screen bg-background py-8 px-4 md:py-12">
+      <div className="absolute top-6 left-6 md:top-8 md:left-8">
+        <Link href="/">
+          <Button variant="ghost" size="icon" className="hover:bg-accent">
+            <HomeIcon className="h-5 w-5" />
+          </Button>
+        </Link>
+      </div>
+      <div className="max-w-3xl mx-auto pt-12 md:pt-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">Plan Your Trip</h1>
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -479,6 +479,7 @@ export default function PlanPage() {
           </form>
         </Form>
       </div>
+      {isLoading && <LoadingAnimation />}
     </div>
   );
 } 

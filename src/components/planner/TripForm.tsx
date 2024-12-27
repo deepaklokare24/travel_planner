@@ -3,17 +3,18 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { useGenerateItinerary } from '@/lib/hooks/useItinerary';
 import type { TravelRequest, TravelPreferences } from '@/types';
+import type { GenerateItineraryRequest } from '@/lib/api/client';
 
 interface FormData {
     fromLocation: string;
     toLocation: string;
     startDate: Date;
-    endDate?: Date;
+    endDate: Date;
     budget: TravelPreferences['budget'];
     interests: string[];
     transportation: TravelPreferences['transportation'];
     accommodation_type: string;
-    pace: TravelPreferences['pace'];
+    pace: 'relaxed' | 'moderate' | 'intense';
     numberOfTravelers: number;
     includeWeather: boolean;
     includeLocalTips: boolean;
@@ -27,11 +28,11 @@ const TripForm = () => {
 
     const onSubmit = async (formData: FormData) => {
         try {
-            const request: TravelRequest = {
+            const request: GenerateItineraryRequest = {
                 from_location: formData.fromLocation,
                 to_location: formData.toLocation,
                 start_date: formData.startDate.toISOString().split('T')[0],
-                end_date: formData.endDate?.toISOString().split('T')[0],
+                end_date: formData.endDate.toISOString().split('T')[0],
                 preferences: {
                     budget: formData.budget,
                     interests: formData.interests || [],

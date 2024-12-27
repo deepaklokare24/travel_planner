@@ -130,8 +130,9 @@ export default function ItineraryResultPage() {
 
   const paragraphs = itinerary.itinerary.split('\n').filter(p => p.trim());
   const days: Day[] = paragraphs.reduce((acc: Day[], paragraph: string) => {
-    if (paragraph.startsWith('**Day')) {
-      const dayNumber = paragraph.match(/Day (\d+)/)?.[1] || '';
+    const dayRegex = /\*\*Day (\d+)/;
+    if (dayRegex.test(paragraph)) {
+      const dayNumber = paragraph.match(dayRegex)?.[1] || '';
       
       // Try to match both date formats
       const longFormatMatch = paragraph.match(/(\w+), (\w+ \d+, \d{4})/);
@@ -165,23 +166,23 @@ export default function ItineraryResultPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background py-12">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="absolute top-4 left-4">
-          <Link href="/">
-            <Button variant="ghost" size="icon" className="hover:bg-accent">
-              <HomeIcon className="h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-        <h1 className="text-3xl font-bold mb-8 text-center">
+    <div className="min-h-screen bg-background py-8 px-4 md:py-12">
+      <div className="absolute top-6 left-6 md:top-8 md:left-8">
+        <Link href="/">
+          <Button variant="ghost" size="icon" className="hover:bg-accent">
+            <HomeIcon className="h-5 w-5" />
+          </Button>
+        </Link>
+      </div>
+      <div className="max-w-6xl mx-auto pt-12 md:pt-8">
+        <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-center">
           Your Itinerary: {itinerary.from_location} to {itinerary.to_location}
         </h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                 <InfoIcon className="h-5 w-5" />
                 Trip Details
               </CardTitle>
@@ -250,48 +251,80 @@ export default function ItineraryResultPage() {
           )}
         </div>
 
-        <Tabs defaultValue="itinerary" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-6 gap-2">
-            <TabsTrigger value="itinerary">Daily Plan</TabsTrigger>
-            <TabsTrigger value="transportation">Transportation</TabsTrigger>
-            <TabsTrigger value="hotels">Hotels</TabsTrigger>
-            <TabsTrigger value="restaurants">Restaurants</TabsTrigger>
-            <TabsTrigger value="attractions">Attractions</TabsTrigger>
-            <TabsTrigger value="tips">Local Tips</TabsTrigger>
+        <Tabs defaultValue="itinerary" className="space-y-4 md:space-y-6">
+          <TabsList className="w-full h-auto flex flex-wrap justify-start gap-2 bg-transparent p-1 md:p-0">
+            <TabsTrigger 
+              value="itinerary" 
+              className="flex-grow md:flex-grow-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-2 text-sm"
+            >
+              Daily Plan
+            </TabsTrigger>
+            <TabsTrigger 
+              value="transportation"
+              className="flex-grow md:flex-grow-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-2 text-sm"
+            >
+              Transportation
+            </TabsTrigger>
+            <TabsTrigger 
+              value="hotels"
+              className="flex-grow md:flex-grow-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-2 text-sm"
+            >
+              Hotels
+            </TabsTrigger>
+            <TabsTrigger 
+              value="restaurants"
+              className="flex-grow md:flex-grow-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-2 text-sm"
+            >
+              Restaurants
+            </TabsTrigger>
+            <TabsTrigger 
+              value="attractions"
+              className="flex-grow md:flex-grow-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-2 text-sm"
+            >
+              Attractions
+            </TabsTrigger>
+            <TabsTrigger 
+              value="tips"
+              className="flex-grow md:flex-grow-0 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground px-3 py-2 text-sm"
+            >
+              Local Tips
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="itinerary">
             <Card>
               <CardHeader>
-                <CardTitle>Daily Itinerary</CardTitle>
+                <CardTitle className="text-lg md:text-xl">Daily Itinerary</CardTitle>
                 <CardDescription>
                   Your day-by-day travel plan from {itinerary.from_location} to {itinerary.to_location}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="single" collapsible className="w-full space-y-2 md:space-y-4">
                   {days.map((day, index) => (
-                    <AccordionItem key={index} value={`day-${index + 1}`}>
-                      <AccordionTrigger className="text-left">
-                        <div className="flex flex-col gap-1">
+                    <AccordionItem key={index} value={`day-${index + 1}`} className="border rounded-lg px-2 md:px-4">
+                      <AccordionTrigger className="text-left py-3 md:py-4">
+                        <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-4">
                           <div className="flex items-center gap-2">
                             <span className="font-semibold text-primary">Day {day.title.dayNumber}</span>
-                            <span className="text-muted-foreground">•</span>
-                            <span>{day.title.date}</span>
+                            <span className="text-muted-foreground hidden md:inline">•</span>
+                            <span className="text-sm md:text-base">{day.title.date}</span>
                           </div>
                           {day.title.dayTitle && (
-                            <span className="text-sm text-muted-foreground pl-4">
+                            <span className="text-sm text-muted-foreground">
                               {day.title.dayTitle}
                             </span>
                           )}
                         </div>
                       </AccordionTrigger>
-                      <AccordionContent className="space-y-4">
-                        {day.content.map((content: string, i: number) => (
-                          <p key={i} className="text-foreground leading-relaxed">
-                            {content}
-                          </p>
-                        ))}
+                      <AccordionContent className="px-2 md:px-4 pb-4">
+                        <div className="space-y-3">
+                          {day.content.map((content: string, i: number) => (
+                            <p key={i} className="text-sm md:text-base text-foreground leading-relaxed">
+                              {content}
+                            </p>
+                          ))}
+                        </div>
                       </AccordionContent>
                     </AccordionItem>
                   ))}
@@ -303,7 +336,7 @@ export default function ItineraryResultPage() {
           <TabsContent value="transportation">
             <Card>
               <CardHeader>
-                <CardTitle>Transportation Options</CardTitle>
+                <CardTitle className="text-lg md:text-xl">Transportation Options</CardTitle>
                 <CardDescription>
                   Available transportation options from {itinerary.from_location} to {itinerary.to_location}
                 </CardDescription>
@@ -325,7 +358,7 @@ export default function ItineraryResultPage() {
                           rel="noopener noreferrer"
                           className="shrink-0"
                         >
-                          <Button variant="outline">
+                          <Button variant="outline" className="w-full md:w-auto">
                             Book Now
                             <ArrowRight className="ml-2 h-4 w-4" />
                           </Button>
@@ -472,19 +505,20 @@ export default function ItineraryResultPage() {
           </TabsContent>
         </Tabs>
 
-        <div className="mt-8 flex justify-center space-x-4">
-          <button
+        <div className="mt-6 md:mt-8 flex flex-col md:flex-row justify-center gap-4 md:space-x-4">
+          <Button
             onClick={() => router.push('/plan')}
-            className="bg-primary text-primary-foreground px-6 py-2 rounded-md hover:bg-primary/90 transition-colors"
+            className="w-full md:w-auto"
           >
             Plan Another Trip
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => window.print()}
-            className="bg-secondary text-secondary-foreground px-6 py-2 rounded-md hover:bg-secondary/90 transition-colors"
+            variant="secondary"
+            className="w-full md:w-auto"
           >
             Print Itinerary
-          </button>
+          </Button>
         </div>
       </div>
     </div>

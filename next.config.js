@@ -5,6 +5,14 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com'],
   },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': '.',
+      '@/src': './src'
+    }
+    return config
+  },
 }
 
 module.exports = nextConfig

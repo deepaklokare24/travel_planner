@@ -67,34 +67,24 @@ module.exports = {
         },
         fly: {
           '0%': { transform: 'translateX(-100%) translateY(0)' },
-          '50%': { transform: 'translateX(0%) translateY(-20px)' },
-          '100%': { transform: 'translateX(100%) translateY(0)' }
+          '50%': { transform: 'translateX(0) translateY(-50%)' },
+          '100%': { transform: 'translateX(100%) translateY(0)' },
         },
         drive: {
           '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' }
+          '100%': { transform: 'translateX(100%)' },
         },
         train: {
           '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' }
+          '100%': { transform: 'translateX(100%)' },
         },
-        "spin-slow": {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' }
-        },
-        progress: {
-          '0%': { width: '0%' },
-          '100%': { width: '100%' }
-        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        fly: 'fly 3s ease-in-out infinite',
-        drive: 'drive 2.5s ease-in-out infinite',
-        train: 'train 4s ease-in-out infinite',
-        "spin-slow": 'spin-slow 3s linear infinite',
-        progress: 'progress 8s ease-in-out infinite'
+        "fly": "fly 3s infinite",
+        "drive": "drive 4s infinite linear",
+        "train": "train 5s infinite linear",
       },
     },
   },
