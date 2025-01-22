@@ -12,7 +12,7 @@ interface Transportation {
   type: string;
   title: string;
   description: string;
-  link: string;
+  steps: string[];
 }
 
 interface Restaurant {
@@ -345,24 +345,18 @@ export default function ItineraryResultPage() {
                 <div className="grid gap-4">
                   {itinerary.transportation_info.map((transport, index) => (
                     <div key={index} className="p-4 rounded-lg border bg-card hover:shadow-md transition-shadow">
-                      <div className="flex flex-col md:flex-row justify-between gap-4">
-                        <div className="space-y-2">
-                          <h4 className="font-medium">{transport.title}</h4>
-                          <p className="text-sm text-muted-foreground">
-                            {transport.description}
-                          </p>
-                        </div>
-                        <a
-                          href={transport.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="shrink-0"
-                        >
-                          <Button variant="outline" className="w-full md:w-auto">
-                            Book Now
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </a>
+                      <div className="space-y-2">
+                        <h4 className="font-medium">Option {index + 1}: {transport.title}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          {transport.description}
+                        </p>
+                        <ul className="list-disc pl-6 space-y-1 mt-2">
+                          {transport.steps.map((step, stepIndex) => (
+                            <li key={stepIndex} className="text-sm">
+                              {step}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
                     </div>
                   ))}
@@ -398,14 +392,16 @@ export default function ItineraryResultPage() {
                           </span>
                         ))}
                       </div>
-                      <a
-                        href={hotel.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline text-sm block mt-2"
-                      >
-                        View Details →
-                      </a>
+                      {hotel.url && (
+                        <a
+                          href={hotel.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline text-sm block mt-2"
+                        >
+                          Visit Website →
+                        </a>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -438,14 +434,16 @@ export default function ItineraryResultPage() {
                         </span>
                         <span>{restaurant.price_level}</span>
                       </div>
-                      <a
-                        href={restaurant.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary hover:underline text-sm block mt-2"
-                      >
-                        View Details →
-                      </a>
+                      {restaurant.url && (
+                        <a
+                          href={restaurant.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary hover:underline text-sm block mt-2"
+                        >
+                          Visit Website →
+                        </a>
+                      )}
                     </div>
                   </CardContent>
                 </Card>

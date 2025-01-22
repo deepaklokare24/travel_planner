@@ -18,11 +18,24 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon, MinusCircle, PlusCircle, Users, HomeIcon } from "lucide-react";
+import { CalendarIcon, MinusCircle, PlusCircle, Users, HomeIcon, MapPin, Star, DollarSign, Utensils, Bus, Hotel } from "lucide-react";
 import { useRouter } from "next/router";
 import { LoadingAnimation } from "@/components/ui/loading-animation";
 import Link from "next/link";
 import { API_BASE_URL } from '@/config/constants';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
 
 const formSchema = z.object({
   from_location: z.string().min(2, "Location is required"),
@@ -45,9 +58,45 @@ type ChipOption = {
   icon?: React.ReactNode;
 };
 
+type TransportationOption = {
+  type: string;
+  title: string;
+  description: string;
+  steps: string[];
+};
+
+type Restaurant = {
+  name: string;
+  description: string;
+  url: string;
+  rating: number;
+  cuisine: string;
+  price_level: string;
+};
+
+type Hotel = {
+  name: string;
+  description: string;
+  url: string;
+  rating: number;
+  location: string;
+  amenities: string[];
+};
+
+type ApiResponse = {
+  itinerary: string;
+  from_location: string;
+  to_location: string;
+  transportation_info: TransportationOption[];
+  restaurants: Restaurant[];
+  hotels: Hotel[];
+  // ... other fields
+};
+
 export default function PlanPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [response, setResponse] = useState<ApiResponse | null>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -97,39 +146,22 @@ export default function PlanPage() {
           include_local_tips: values.include_local_tips,
         }),
       });
-      
+
       if (!response.ok) {
         throw new Error("Failed to generate itinerary");
       }
 
       const data = await response.json();
-      console.log("API Response:", data);
       
-      if (data && data.itinerary) {
-        // Store all the rich content from the API response
-        localStorage.setItem('currentItinerary', JSON.stringify({
-          itinerary: data.itinerary,
-          from_location: data.from_location,
-          to_location: data.to_location,
-          start_date: data.start_date,
-          end_date: data.end_date,
-          generated_at: data.generated_at,
-          metadata: data.metadata,
-          transportation_info: data.transportation_info,
-          weather_info: data.weather_info,
-          attractions: data.attractions,
-          restaurants: data.restaurants,
-          hotels: data.hotels,
-          local_tips: data.local_tips,
-          request_details: data.request_details
-        }));
-        router.push(`/itinerary/result`);
-      } else {
-        throw new Error("Invalid response format from API");
-      }
+      // Store the response in localStorage
+      localStorage.setItem('currentItinerary', JSON.stringify(data));
+      
+      // Redirect to the result page
+      router.push('/itinerary/result');
+      
     } catch (error) {
-      console.error("Error generating itinerary:", error);
-      // You might want to show an error message to the user here
+      console.error("Error:", error);
+      setResponse(null);
     } finally {
       setIsLoading(false);
     }
@@ -171,7 +203,7 @@ export default function PlanPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-background py-8 px-4 md:py-12">
+    <div className="container mx-auto py-8">
       <div className="absolute top-6 left-6 md:top-8 md:left-8">
         <Link href="/">
           <Button variant="ghost" size="icon" className="hover:bg-accent">
@@ -481,6 +513,141 @@ export default function PlanPage() {
         </Form>
       </div>
       {isLoading && <LoadingAnimation />}
+      
+      {response && (
+        <div className="mt-8">
+          <Tabs defaultValue="itinerary">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="itinerary">Itinerary</TabsTrigger>
+              <TabsTrigger value="transportation">Transportation</TabsTrigger>
+              <TabsTrigger value="restaurants">Restaurants</TabsTrigger>
+              <TabsTrigger value="hotels">Hotels</TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="itinerary">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Your Itinerary</CardTitle>
+                  <CardDescription>
+                    From {response.from_location} to {response.to_location}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="prose max-w-none">
+                    {response.itinerary.split('\n').map((line, index) => (
+                      <p key={index}>{line}</p>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="transportation">
+              <div className="grid gap-4">
+                {response.transportation_info.map((option, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Bus className="h-5 w-5" />
+                        Option {index + 1}
+                      </CardTitle>
+                      <CardDescription>{option.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="list-disc pl-6 space-y-2">
+                        {option.steps.map((step, stepIndex) => (
+                          <li key={stepIndex}>{step}</li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="restaurants">
+              <div className="grid gap-4 md:grid-cols-2">
+                {response.restaurants.map((restaurant, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Utensils className="h-5 w-5" />
+                        {restaurant.name}
+                      </CardTitle>
+                      <CardDescription className="flex items-center gap-4">
+                        <span className="flex items-center gap-1">
+                          <Star className="h-4 w-4 text-yellow-400" />
+                          {restaurant.rating}
+                        </span>
+                        <span>{restaurant.cuisine}</span>
+                        <span>{restaurant.price_level}</span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>{restaurant.description}</p>
+                      {restaurant.url && (
+                        <a
+                          href={restaurant.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:underline mt-2 inline-block"
+                        >
+                          Visit Website
+                        </a>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="hotels">
+              <div className="grid gap-4 md:grid-cols-2">
+                {response.hotels.map((hotel, index) => (
+                  <Card key={index}>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Hotel className="h-5 w-5" />
+                        {hotel.name}
+                      </CardTitle>
+                      <CardDescription className="flex items-center gap-4">
+                        <span className="flex items-center gap-1">
+                          <Star className="h-4 w-4 text-yellow-400" />
+                          {hotel.rating}
+                        </span>
+                        <span>{hotel.location}</span>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p>{hotel.description}</p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {hotel.amenities.map((amenity, amenityIndex) => (
+                          <span
+                            key={amenityIndex}
+                            className="bg-gray-100 px-2 py-1 rounded-md text-sm"
+                          >
+                            {amenity}
+                          </span>
+                        ))}
+                      </div>
+                      {hotel.url && (
+                        <a
+                          href={hotel.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:underline mt-2 inline-block"
+                        >
+                          Visit Website
+                        </a>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      )}
     </div>
   );
 } 
