@@ -7,6 +7,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 interface Transportation {
   type: string;
@@ -351,11 +352,22 @@ export default function ItineraryResultPage() {
                           {transport.description}
                         </p>
                         <ul className="list-disc pl-6 space-y-1 mt-2">
-                          {transport.steps.map((step, stepIndex) => (
-                            <li key={stepIndex} className="text-sm">
-                              {step}
-                            </li>
-                          ))}
+                          {transport.steps.map((step, stepIndex) => {
+                            const isCustomStep = !step.includes("<b>");
+                            return (
+                              <li 
+                                key={stepIndex} 
+                                className={cn(
+                                  "text-sm leading-relaxed",
+                                  isCustomStep && "text-muted-foreground italic"
+                                )}
+                              >
+                                {isCustomStep ? step : (
+                                  <span dangerouslySetInnerHTML={{ __html: step }} />
+                                )}
+                              </li>
+                            );
+                          })}
                         </ul>
                       </div>
                     </div>
@@ -417,7 +429,7 @@ export default function ItineraryResultPage() {
                     <CardTitle className="flex items-center justify-between">
                       <span className="text-lg">{restaurant.name}</span>
                       <span className="flex items-center text-sm">
-                        <StarIcon className="h-4 w-4 text-yellow-400 mr-1" />
+                        <UtensilsIcon className="h-4 w-4" />
                         {restaurant.rating}
                       </span>
                     </CardTitle>
